@@ -2,7 +2,6 @@ from models.base_model import BaseModel
 from flask import flash
 import peewee as pw
 from playhouse.hybrid import hybrid_property
-import re
 from werkzeug.security import generate_password_hash, check_password_hash
 from config import S3_LOCATION, DEFAULT_IMAGE
 
