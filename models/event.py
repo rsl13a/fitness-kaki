@@ -1,4 +1,5 @@
 from models.base_model import BaseModel
+from models.user import User
 from flask import flash
 import peewee as pw
 from playhouse.hybrid import hybrid_property
@@ -10,7 +11,7 @@ class Event(BaseModel):
     description = pw.CharField(null=True)
     location = pw.CharField(default="TBC")
     host = pw.ForeignKeyField(User, backref='events_hosting')
-    time = pw.DateTimeField(default = datetime.datetime.now)
+    time = pw.DateTimeField(default = datetime.now())
     event_image = pw.CharField(default=DEFAULT_EVENT_IMAGE)
     guest = pw.ForeignKeyField(User, backref='events_attending')
     max_number=pw.IntegerField(default=0)
@@ -26,7 +27,7 @@ class Event(BaseModel):
             self.errors.append('Event name cannot be empty')
         
         #check that the event time is at least 1 minute in advance of current time. Might be an issue due to server lag / timeout.
-        current_time=datetime.datetime.now()
+        current_time=datetime.now()
         if (self.time -  current_time) < datetime.timedelta(minutes=1):
             self.errors.append('Event has to be in the future')
  
