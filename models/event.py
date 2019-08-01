@@ -22,7 +22,7 @@ class Event(BaseModel):
     
     def validate(self):
         #check that event has at least a name
-        if self.event_name==''
+        if self.event_name=='':
             self.errors.append('Event name cannot be empty')
         
         #check that the event time is at least 1 minute in advance of current time. Might be an issue due to server lag / timeout.
