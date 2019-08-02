@@ -1,7 +1,7 @@
 from flask import Flask, Blueprint, jsonify, make_response, request
 from werkzeug.security import check_password_hash
 from flask_jwt_extended import create_access_token, jwt_required
-from models.events import Event
+from models.event import Event
 from flask_login import current_user
 
 events_api_blueprint = Blueprint('events_api', __name__)

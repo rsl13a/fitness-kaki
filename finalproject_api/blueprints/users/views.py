@@ -24,11 +24,11 @@ def index():
 
 @users_api_blueprint.route('/', methods=['POST'])
 def create():
-   username = request.json.get('username', None)
-   email = request.json.get('email', None)
-   password = request.json.get('password', None)
-   first_name = request.json.get('first_name', None)
-   last_name = request.json.get('last_name', None)
+   username = request.form.get('username', None)
+   email = request.form.get('email', None)
+   password = request.form.get('password', None)
+   first_name = request.form.get('first_name', None)
+   last_name = request.form.get('last_name', None)
 
    if len(password) <6:
       response ={ 'message': 'Password too short'}
