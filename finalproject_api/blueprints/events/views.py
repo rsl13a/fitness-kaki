@@ -18,7 +18,7 @@ def create():
 
     event =Event(event_name=event_name, description=description, location=location, host=host, time=time, max_number=max_number)
 
-    if event.save()
+    if event.save():
         event = Event.get_by_id(event.id)
         response = {'message': 'Event successfully created',
                     'data': {
