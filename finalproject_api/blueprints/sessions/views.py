@@ -16,7 +16,17 @@ def new():
     if user==None:
         response = {'message': 'No such user'}
         return make_response(jsonify(response), 400)
+
     if check_password_hash(user.password, password):
-        access_token = create_access_token(identity = user.id)
+        identity = {
+            'id':user.id,
+            'username':user.username,
+            'profile_image':user.profile_image_url
+        }
+        access_token = create_access_token(identity = identity)
         response = {'message': 'Login successful', 'auth_token':access_token}
         return make_response(jsonify(response),200)
+
+    else:
+        response = {'message':'invalid password'}
+        return make_response(jsonify(response), 401)

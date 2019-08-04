@@ -1,7 +1,7 @@
 from flask import Flask, Blueprint, jsonify, make_response, request
 from models.user import User
 from werkzeug.security import generate_password_hash
-
+from flask_jwt_extended import create_access_token
 
 users_api_blueprint = Blueprint('users_api',
                              __name__,
@@ -39,7 +39,15 @@ def create():
       user = User(first_name=first_name, last_name=last_name, username=username, password=hashed_password, email=email)
       if user.save():
          response ={ 'message': 'Sign-up successful'}
+         identity={
+            'id': user.id,
+            'username':user.username,
+            'profile_image':user.profile_image_url
+         }
+         auth_token =  create_access_token(identity = identity)
+         response['data']={'JWT':auth_token}
          return make_response(jsonify(response), 200)
+
       else:
          message = ' .'.join(user.errors)
          response ={ 'message': message}

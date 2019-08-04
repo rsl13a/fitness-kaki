@@ -13,7 +13,7 @@ class Event(BaseModel):
     host = pw.ForeignKeyField(User, backref='events_hosting')
     time = pw.DateTimeField(default = datetime.now())
     event_image = pw.CharField(default=DEFAULT_EVENT_IMAGE)
-    guest = pw.ForeignKeyField(User, backref='events_attending')
+    guest = pw.ForeignKeyField(User, backref='events_attending', null=True)
     max_number=pw.IntegerField(default=0)
     private = pw.BooleanField(default = True)
 
@@ -28,6 +28,7 @@ class Event(BaseModel):
         
         #check that the event time is at least 1 minute in advance of current time. Might be an issue due to server lag / timeout.
         current_time=datetime.now()
-        if (self.time -  current_time) < datetime.timedelta(minutes=1):
+        self.time =datetime.strptime(self.time, "%Y-%m-%d %H:%M:%S.%f") #convert string to datetime object
+        if (self.time -  current_time) < timedelta(minutes=1):
             self.errors.append('Event has to be in the future')
  

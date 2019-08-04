@@ -12,7 +12,7 @@ def create():
     event_name = request.json.get('event_name')
     description = request.json.get('description')
     location = request.json.get('location')
-    host = current_user.id
+    host = request.json.get('host')
     time = request.json.get('time')
     max_number=request.json.get('max_number')
 
@@ -25,7 +25,7 @@ def create():
                         'event_name':event.event_name,
                         'description':event.description,
                         'location': event.location,
-                        'host':event.host,
+                        'host':event.host.id,
                         'max_number':event.max_number,
                     }}
         return make_response(jsonify(response), 200)
