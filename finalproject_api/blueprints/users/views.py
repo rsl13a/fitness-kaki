@@ -51,5 +51,5 @@ def create():
 
       else:
          message = ' .'.join(user.errors)
-         response ={ 'message': 'message'}
+         response ={ 'message': message}
          return make_response(jsonify(response), 400)
