@@ -16,7 +16,7 @@ def create():
     time = request.json.get('time')
     max_number=request.json.get('max_number')
 
-    event =Event(event_name=event_name, description=description, location=location, host=host, time=time, max_number=max_number)
+    event =Event(name=name, description=description, location=location, host=host, time=time, max_number=max_number)
 
     if event.save():
         event = Event.get_by_id(event.id)
