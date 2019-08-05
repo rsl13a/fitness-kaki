@@ -7,7 +7,7 @@ from config import S3_LOCATION, DEFAULT_EVENT_IMAGE
 from datetime import datetime, timedelta
 
 class Event(BaseModel):
-    event_name = pw.CharField(null=False)
+    name = pw.CharField(null=False)
     description = pw.CharField(null=True)
     location = pw.CharField(default="TBC")
     host = pw.ForeignKeyField(User, backref='events_hosting')

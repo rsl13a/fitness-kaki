@@ -9,7 +9,7 @@ events_api_blueprint = Blueprint('events_api', __name__)
 @events_api_blueprint.route('/', methods=['POST'])
 @jwt_required
 def create():
-    event_name = request.json.get('event_name')
+    name = request.json.get('name')
     description = request.json.get('description')
     location = request.json.get('location')
     host = request.json.get('host')
@@ -22,7 +22,7 @@ def create():
         event = Event.get_by_id(event.id)
         response = {'message': 'Event successfully created',
                     'data': {
-                        'event_name':event.event_name,
+                        'name':event.name,
                         'description':event.description,
                         'location': event.location,
                         'host':event.host.id,
@@ -32,3 +32,24 @@ def create():
     else:
         response = {'message': 'Event creation failed'}
         return make_response(jsonify(response), 400)
+
+#retrieve a list of all events
+@events_api_blueprint.route('/', methods=['GET'])
+def index():
+    response=[]
+    events = Event.select()
+    for event in events:
+        details={
+                'id':event.id,
+                'name':event.name,
+                'description':event.description,
+                'location': event.location,
+                'host':event.host.id,
+                'max_number':event.max_number}
+        response.append(details)
+
+    if len(response)!=0:
+        return make_response(jsonify(response), 200)
+    else:
+        response = {'message': 'No events'}
+        return make_response(jsonify(response), 200)
