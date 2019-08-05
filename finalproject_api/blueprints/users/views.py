@@ -31,7 +31,7 @@ def create():
    first_name = request.json.get('first_name', None)
    last_name = request.json.get('last_name', None)
 
-   if len(password) <6:
+   if len(password) <8:
       response ={ 'message': 'Password too short'}
       return make_response(jsonify(response), 400)
     

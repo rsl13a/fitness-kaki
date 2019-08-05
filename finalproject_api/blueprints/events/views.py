@@ -53,3 +53,4 @@ def index():
     else:
         response = {'message': 'No events'}
         return make_response(jsonify(response), 200)
+
