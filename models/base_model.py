@@ -14,6 +14,7 @@ class BaseModel(pw.Model):
 
         if len(self.errors) == 0:
             self.updated_at = datetime.datetime.now()
+            breakpoint()
             return super(BaseModel, self).save(*args, **kwargs)
         else:
             return 0

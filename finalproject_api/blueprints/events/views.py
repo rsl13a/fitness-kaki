@@ -7,18 +7,21 @@ from flask_login import current_user
 events_api_blueprint = Blueprint('events_api', __name__)
 
 @events_api_blueprint.route('/', methods=['POST'])
-@jwt_required
+# @jwt_required
 def create():
     name = request.json.get('name')
     description = request.json.get('description')
     location = request.json.get('location')
-    host = request.json.get('host')
+    # host = request.json.get('host')
+    host = 1
     time = request.json.get('time')
-    max_number=request.json.get('max_number')
+    max_number= request.json.get('max_number')
+    breakpoint()
 
     event =Event(name=name, description=description, location=location, host=host, time=time, max_number=max_number)
 
     if event.save():
+        print('event saved')
         event = Event.get_by_id(event.id)
         response = {'message': 'Event successfully created',
                     'data': {
@@ -26,7 +29,7 @@ def create():
                         'description':event.description,
                         'location': event.location,
                         'host':event.host.id,
-                        'max_number':event.max_number,
+                        'max_number':event.max_number
                     }}
         return make_response(jsonify(response), 200)
     else:

@@ -18,13 +18,13 @@ def new():
         return make_response(jsonify(response), 400)
 
     if check_password_hash(user.password, password):
-        identity = {
+        user = {
             'id':user.id,
             'username':user.username,
             'profile_image':user.profile_image_url
         }
-        access_token = create_access_token(identity = identity)
-        response = {'message': 'Login successful', 'auth_token':access_token}
+        access_token = create_access_token(identity = user.id)
+        response = {'message': 'Login successful', 'auth_token':access_token, 'user':user}
         return make_response(jsonify(response),200)
 
     else:
