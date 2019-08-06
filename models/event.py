@@ -28,7 +28,6 @@ class Event(BaseModel):
         
         #check that the event time is at least 1 minute in advance of current time. Might be an issue due to server lag / timeout.
         current_time=datetime.now()
-        breakpoint()
         if self.time!='':
             self.time =datetime.strptime(self.time, "%Y-%m-%dT%H:%M") #convert string to datetime object
             if (self.time -  current_time) < timedelta(minutes=1):

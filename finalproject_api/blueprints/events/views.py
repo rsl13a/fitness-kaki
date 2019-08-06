@@ -12,11 +12,9 @@ def create():
     name = request.json.get('name')
     description = request.json.get('description')
     location = request.json.get('location')
-    # host = request.json.get('host')
-    host = 1
+    host = request.json.get('host')
     time = request.json.get('time')
     max_number= request.json.get('max_number')
-    breakpoint()
 
     event =Event(name=name, description=description, location=location, host=host, time=time, max_number=max_number)
 
