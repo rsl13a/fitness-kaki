@@ -1,0 +1,1 @@
+This code is the backend for the final group project as part of the NEXT Full Stack Web Dev Course Jun'19. To access the APIs, please visit this link instead: https://documenter.getpostman.com/view/8312758/SVYqNyhV
