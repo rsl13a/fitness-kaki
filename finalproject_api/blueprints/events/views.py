@@ -27,7 +27,8 @@ def create():
                         'description':event.description,
                         'location': event.location,
                         'host':event.host.id,
-                        'max_number':event.max_number
+                        'max_number':event.max_number,
+                        'time':event.time
                     }}
         return make_response(jsonify(response), 200)
     else:
@@ -46,7 +47,8 @@ def index():
                 'description':event.description,
                 'location': event.location,
                 'host':event.host.id,
-                'max_number':event.max_number}
+                'max_number':event.max_number,
+                'time':event.time}
         response.append(details)
 
     if len(response)!=0:
