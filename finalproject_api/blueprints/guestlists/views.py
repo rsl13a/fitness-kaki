@@ -38,7 +38,6 @@ def create():
 def show(id):
     data=[]
     event = Event.get_or_none(Event.id==id)
-    breakpoint()
     if event:
         print('event exists')
         print(event)
