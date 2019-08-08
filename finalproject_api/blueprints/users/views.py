@@ -3,9 +3,7 @@ from models.user import User
 from werkzeug.security import generate_password_hash
 from flask_jwt_extended import create_access_token, jwt_required
 
-users_api_blueprint = Blueprint('users_api',
-                             __name__,
-                             template_folder='templates')
+users_api_blueprint = Blueprint('users_api', __name__)
 
 @users_api_blueprint.route('/', methods=['GET'])
 @jwt_required

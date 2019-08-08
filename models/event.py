@@ -13,7 +13,7 @@ class Event(BaseModel):
     host = pw.ForeignKeyField(User, backref='events_hosting')
     time = pw.DateTimeField(null=True)
     event_image = pw.CharField(default=DEFAULT_EVENT_IMAGE)
-    guest = pw.ForeignKeyField(User, backref='events_attending', null=True)
+    # guest = pw.ForeignKeyField(User, backref='events_attending', null=True)
     max_number=pw.IntegerField(default=0)
     private = pw.BooleanField(default = True)
 
