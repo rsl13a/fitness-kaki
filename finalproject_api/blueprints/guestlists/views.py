@@ -38,7 +38,10 @@ def create():
 def show(id):
     data=[]
     event = Event.get_or_none(Event.id==id)
+    breakpoint()
     if event:
+        print('event exists')
+        print(event)
         for guest in event.guests:
             user = User.get_by_id(guest)
             guest_data = {'id':user.id, 'profile_image':user.profile_image_url, 'username':user.username}
