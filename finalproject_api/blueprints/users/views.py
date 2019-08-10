@@ -1,7 +1,7 @@
 from flask import Flask, Blueprint, jsonify, make_response, request
 from models.user import User
 from werkzeug.security import generate_password_hash
-from flask_jwt_extended import create_access_token, jwt_required
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 
 users_api_blueprint = Blueprint('users_api', __name__)
 
@@ -40,14 +40,39 @@ def create():
          response ={ 'message': 'Sign-up successful'}
          identity={
             'id': user.id,
-            'username':user.username,
-            'profile_image':user.profile_image_url
          }
          auth_token =  create_access_token(identity = identity)
          response['data']={'JWT':auth_token}
+         breakpoint()
          return make_response(jsonify(response), 200) #automatically logs in user upon sign-up but this will need to be removed if email verification upon sign-up is used.
 
       else:
          message = ' .'.join(user.errors)
          response ={ 'message': message}
          return make_response(jsonify(response), 400)
+   
+@users_api_blueprint.route('/update', methods=['POST'])
+@jwt_required
+def update():
+   current_user = get_jwt_identity()
+   user = User.get_by_id(current_user)
+
+   #update user details if there are any updates in JSON. else,use original detail stored in database.
+   user.username = request.json.get('username', user.username)
+   user.email = request.json.get('email', user.email)
+   user.first_name = request.json.get('first_name', user.first_name)
+   user.last_name = request.json.get('last_name', user.last_name)
+
+   if user.save():
+      updated_details={
+         'username':user.username,
+         'email':user.email,
+         'first_name':user.first_name,
+         'last_name':user.last_name
+      }
+      response={'message':'update successful', 'updated_details':updated_details}
+      return make_response(jsonify(response), 200)
+   else:
+      response = {'message': 'user update failed', 'errors':user.errors}
+      return make_response(jsonify(response), 400)
+
