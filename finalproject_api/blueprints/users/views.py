@@ -1,6 +1,7 @@
 from flask import Flask, Blueprint, jsonify, make_response, request
 from models.user import User
 from werkzeug.security import generate_password_hash
+from werkzeug.utils import secure_filename
 from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 
 users_api_blueprint = Blueprint('users_api', __name__)
@@ -57,7 +58,7 @@ def update():
    current_user = get_jwt_identity()
    user = User.get_by_id(current_user)
 
-   #update user details if there are any updates in JSON. else,use original detail stored in database.
+   #update user details if there are any updates in JSON. else,use original detail stored in database
    user.username = request.json.get('username', user.username)
    user.email = request.json.get('email', user.email)
    user.first_name = request.json.get('first_name', user.first_name)

@@ -1,4 +1,4 @@
-from boto3 import boto3, botocore
+import boto3, botocore
 from config import S3_BUCKET, S3_KEY, S3_LOCATION, S3_SECRET
 from flask import Flask
 
@@ -8,7 +8,7 @@ s3 = boto3.client(
     aws_secret_access_key=S3_SECRET,
 )
 
-def upload_t0_s3(file, bucket_name=S3_BUCKET, acl="public-read"):
+def upload_to_s3(file, bucket_name=S3_BUCKET, acl="public-read"):
     try:
         s3.upload_fileobj(
             file,
