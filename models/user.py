@@ -26,13 +26,13 @@ class User(BaseModel):
         return S3_LOCATION + self.profile_image
 
     def validate(self):
-        if self.username!='' and self.password!='' and self.email!='' and self.first_name!='' and self.last_name!='':
-            duplicate_email = User.get_or_none(User.email == self.email)
-            duplicate_username = User.get_or_none(User.username == self.username)            
-            if duplicate_username: #add duplicate_username!=self.username?
-                self.errors.append('Username not unique')
+        if self.username!='' and self.password!='' and self.email!='' and self.first_name!='' and self.last_name!='': #user_email is not blank
+            duplicate_email = User.get_or_none(User.email == self.email) # no other users have this email
+            duplicate_username = User.get_or_none(User.username == self.username) # no other users have this username
             
-            if duplicate_email:
+            if duplicate_username and duplicate_username.id!=self.id: #ensure that user with same username is different from this user
+                self.errors.append('Username not unique')
+            if duplicate_email  and duplicate_email.id!=self.id: #ensure that user with same username is different from this user
                 self.errors.append('Email not unique')
         else:
             self.errors.append('Fields cannot be empty')
