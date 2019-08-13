@@ -41,7 +41,7 @@ def create():
 @events_api_blueprint.route('/', methods=['GET'])
 # @jwt_required
 def index():
-    response={}
+    response=[]
     events = Event.select().order_by(Event.time.desc())
 
     for event in events:
@@ -58,7 +58,7 @@ def index():
         data['host'] = host
         guestlistExists = Guestlist.get_or_none(Guestlist.event == event.id)
         if guestlistExists!=None:
-            guestlist = User.select(User.id, User.username).join(Guestlist, on=(Guestlist.guest == User.id)).where(Guestlist.event == event.id)
+            guestlist = User.select().join(Guestlist, on=(Guestlist.guest == User.id)).where(Guestlist.event == event.id)
             roster=[]
             for entry in guestlist:
                 roster.append({
@@ -70,6 +70,6 @@ def index():
             roster='no guests'
         
         data['guests']=roster
-        response['data']=data
-        return make_response(jsonify(response), 200)
+        response.append(data)
+    return make_response(jsonify(response), 200)
 
