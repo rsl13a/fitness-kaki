@@ -41,24 +41,21 @@ def create():
 @events_api_blueprint.route('/', methods=['GET'])
 # @jwt_required
 def index():
-    response=[]
+    response={}
     events = Event.select().order_by(Event.time.desc())
 
     for event in events:
-        details={
+        data={
                 'id':event.id,
                 'name':event.name,
                 'description':event.description,
                 'location': event.location,
-                'host':event.host.id,
                 'max_number':event.max_number,
                 'time':event.time}
-        response.append(details)
         
-        print(details)
         #obtain names of host, guests and provide in event
         host = {'id':event.host.id, 'username':event.host.username, 'profile_image_url':event.host.profile_image_url}
-        print(f"host details is as follows {host}")
+        data['host'] = host
         guestlistExists = Guestlist.get_or_none(Guestlist.event == event.id)
         if guestlistExists!=None:
             guestlist = User.select(User.id, User.username).join(Guestlist, on=(Guestlist.guest == User.id)).where(Guestlist.event == event.id)
@@ -69,9 +66,10 @@ def index():
                     'username':entry.username,
                     'profile_image_url':entry.profile_image_url
                 })
-    if len(response)!=0:
-        return make_response(jsonify(response), 200)
-    else:
-        response = {'message': 'No events'}
+        else:
+            roster='no guests'
+        
+        data['guests']=roster
+        response['data']=data
         return make_response(jsonify(response), 200)
 

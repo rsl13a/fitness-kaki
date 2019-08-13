@@ -57,11 +57,38 @@ def update():
    current_user = get_jwt_identity()
    user = User.get_by_id(current_user)
 
+   current_username = user.username
+   current_first_name = user.first_name
+   current_last_name = user.last_name
+   current_email=user.email
+
    #update user details if there are any updates in JSON. else,use original detail stored in database
-   user.username = request.json.get('username', user.username)
-   user.email = request.json.get('email', user.email)
-   user.first_name = request.json.get('first_name', user.first_name)
-   user.last_name = request.json.get('last_name', user.last_name)
+   user.username = request.json.get('username')
+   if user.username==None or user.username=='':
+      user.username = current_username
+   
+   user.first_name = request.json.get('first_name')
+   if user.first_name==None or user.first_name=='':
+      user.first_name = current_first_name
+
+   user.last_name = request.json.get('last_name')
+   if user.last_name==None or user.last_name=='':
+      user.last_name = current_last_name
+
+   user.email = request.json.get('email')
+   if user.email==None or user.email=='':
+      user.email = current_email
+      
+
+   # print(user.username)
+   # user.email = request.json.get('email', user.email)
+   # print(user.email)
+   # user.first_name = request.json.get('first_name', user.first_name)
+   # print(user.first_name)
+   # user.last_name = request.json.get('last_name', user.last_name)
+   # print(user.last_name)
+   
+   breakpoint()
 
    if user.save():
       updated_details={
@@ -74,5 +101,6 @@ def update():
       return make_response(jsonify(response), 200)
    else:
       response = {'message': 'user update failed', 'errors':user.errors}
+      print(user.errors)
       return make_response(jsonify(response), 400)
 
