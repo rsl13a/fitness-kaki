@@ -57,18 +57,15 @@ def index():
         host = {'id':event.host.id, 'username':event.host.username, 'profile_image_url':event.host.profile_image_url}
         data['host'] = host
         guestlistExists = Guestlist.get_or_none(Guestlist.event == event.id)
+        roster=[]
         if guestlistExists!=None:
             guestlist = User.select().join(Guestlist, on=(Guestlist.guest == User.id)).where(Guestlist.event == event.id)
-            roster=[]
             for entry in guestlist:
                 roster.append({
                     'id':entry.id,
                     'username':entry.username,
                     'profile_image_url':entry.profile_image_url
-                })
-        else:
-            roster='no guests'
-        
+                })        
         data['guests']=roster
         response.append(data)
     return make_response(jsonify(response), 200)
