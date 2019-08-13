@@ -23,7 +23,8 @@ def new():
             'username':user.username,
             'profile_image_url':user.profile_image_url,
             'first_name':user.first_name,
-            'last_name':user.last_name
+            'last_name':user.last_name,
+            'email':user.email
         }
         access_token = create_access_token(identity = user.id)
         response = {'message': 'Login successful', 'auth_token':access_token, 'user':user_details}
