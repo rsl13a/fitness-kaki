@@ -88,8 +88,6 @@ def update():
    # user.last_name = request.json.get('last_name', user.last_name)
    # print(user.last_name)
    
-   breakpoint()
-
    if user.save():
       updated_details={
          'username':user.username,
