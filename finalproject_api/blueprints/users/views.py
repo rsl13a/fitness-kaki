@@ -44,8 +44,7 @@ def create():
          }
          auth_token =  create_access_token(identity = identity)
          response['data']={'JWT':auth_token}
-         breakpoint()
-         return make_response(jsonify(response), 200) #automatically logs in user upon sign-up but this will need to be removed if email verification upon sign-up is used.
+         return make_response(jsonify(response), 200)
 
       else:
          message = ' .'.join(user.errors)

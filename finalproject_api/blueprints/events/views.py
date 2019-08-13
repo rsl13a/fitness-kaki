@@ -1,19 +1,20 @@
 from flask import Flask, Blueprint, jsonify, make_response, request
 from werkzeug.security import check_password_hash
-from flask_jwt_extended import create_access_token, jwt_required
+from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 from models.event import Event
+from models.user import User
 from models.guestlist import Guestlist
 from flask_login import current_user
 
 events_api_blueprint = Blueprint('events_api', __name__)
 
 @events_api_blueprint.route('/', methods=['POST'])
-# @jwt_required
+@jwt_required
 def create():
     name = request.json.get('name')
     description = request.json.get('description')
     location = request.json.get('location')
-    host = request.json.get('host')
+    host = get_jwt_identity()
     time = request.json.get('time')
     max_number= request.json.get('max_number')
 
@@ -38,9 +39,11 @@ def create():
 
 #retrieve a list of all events
 @events_api_blueprint.route('/', methods=['GET'])
+# @jwt_required
 def index():
     response=[]
-    events = Event.select()
+    events = Event.select().order_by(Event.time.desc())
+
     for event in events:
         details={
                 'id':event.id,
@@ -51,7 +54,22 @@ def index():
                 'max_number':event.max_number,
                 'time':event.time}
         response.append(details)
-
+        
+        print(details)
+        #obtain names of host, guests and provide in event
+        host = {'id':event.host.id, 'username':event.host.username, 'profile_image_url':event.host.profile_image_url}
+        print(f"host details is as follows {host}")
+        guestlistExists = Guestlist.get_or_none(Guestlist.event == event.id)
+        if guestlistExists!=None:
+            guestlist = User.select(User.id, User.username).join(Guestlist, on=(Guestlist.guest == User.id)).where(Guestlist.event == event.id)
+            roster=[]
+            for entry in guestlist:
+                roster.append({
+                    'id':entry.id,
+                    'username':entry.username,
+                    'profile_image_url':entry.profile_image_url
+                })
+            breakpoint()
     if len(response)!=0:
         return make_response(jsonify(response), 200)
     else:

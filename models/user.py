@@ -23,6 +23,11 @@ class User(BaseModel):
 
     @hybrid_property
     def profile_image_url(self):
+        #weird error pops up where after 4 or 5 calls for a profile_image_url, it returns the value of profile_image as None
+        if self.profile_image==None:
+            print('profile_image is None')
+            self.profile_image='athlete.png'
+            print(f'profile_image is {self.profile_image}')
         return S3_LOCATION + self.profile_image
 
     def validate(self):

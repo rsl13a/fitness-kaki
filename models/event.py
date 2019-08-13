@@ -30,6 +30,7 @@ class Event(BaseModel):
         current_time=datetime.now()
         if self.time!='':
             self.time =datetime.strptime(self.time, "%Y-%m-%dT%H:%M") #convert string to datetime object
+            # self.time =datetime.strptime(self.time) #convert string to datetime object
             if (self.time -  current_time) < timedelta(minutes=1):
                 self.errors.append('Event has to be in the future')
         else:
