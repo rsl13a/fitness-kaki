@@ -69,7 +69,6 @@ def index():
                     'username':entry.username,
                     'profile_image_url':entry.profile_image_url
                 })
-            breakpoint()
     if len(response)!=0:
         return make_response(jsonify(response), 200)
     else:
