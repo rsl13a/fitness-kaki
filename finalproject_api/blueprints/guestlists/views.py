@@ -33,12 +33,12 @@ def create():
             else:
                 print('guest_id not provided')
                 error={'error':'guest id not provided'}
-                return make_response(jsonify(error),422)
+                return make_response(jsonify(error),200)
 
     else:
         print('event_id not exists')
         error={'error':'event id does not exist'}
-        return make_response(jsonify(error),422)
+        return make_response(jsonify(error),200)
 
 #retrieve list of guests for an event. route(app/guestlists/:id) where id is the event id (GET)
 #not quite correct. guestlist_id is 
