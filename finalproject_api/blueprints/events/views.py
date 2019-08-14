@@ -51,7 +51,8 @@ def index():
                 'description':event.description,
                 'location': event.location,
                 'max_number':event.max_number,
-                'time':event.time}
+                'time':event.time,
+                'image':event.event_image_url}
         
         #obtain names of host, guests and provide in event
         host = {'id':event.host.id, 'username':event.host.username, 'profile_image_url':event.host.profile_image_url}
