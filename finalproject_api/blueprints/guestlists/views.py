@@ -29,7 +29,7 @@ def create():
             if guestlist.save():
                 print(f'guest with id {guest} was saved for event_id: {event_id}')
                 response={'message':'guest added'}
-                return make_response(jsonify(response),400)
+                return make_response(jsonify(response),200)
             else:
                 error={'error':'guest id not provided'}
                 return make_response(jsonify(error),422)
