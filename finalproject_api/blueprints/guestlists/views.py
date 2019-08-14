@@ -2,6 +2,7 @@ from flask import Blueprint,make_response,jsonify, request
 from models.guestlist import Guestlist
 from models.user import User
 from models.event import Event
+from flask_jwt_extended import get_jwt_identity, jwt_required
 
 guestlists_api_blueprint=Blueprint('guestlists_api', __name__)
 
@@ -10,23 +11,27 @@ guestlists_api_blueprint=Blueprint('guestlists_api', __name__)
 # def index():
 
 @guestlists_api_blueprint.route('/', methods=['POST'])
+@jwt_required
 def create():
     event_id = request.json.get('event_id')
-    guests = request.json.get('guests')
+    guest = get_jwt_identity()
     event_details = Event.get_or_none(Event.id==event_id)
     if event_details!=None:
-        if len(guests)>0:
-            for guest in guests:
-                guestlist = Guestlist(event = event_id, guest = guest)
+        guestlist = Guestlist.get_or_none(Guestlist.event == event_id, Guestlist.guest==guest)
 
-                if guestlist.save():
-                    print(f'guest with id {guest} was saved for event_id: {event_id}')
-
-            response={'message':'guest added'}
+        if guestlist!=None:
+            response={'message':'guest already in guestlist'}
             return make_response(jsonify(response),200)
+
         else:
-            error={'error':'guest id not provided'}
-            return make_response(jsonify(error),422)
+            guestlist = Guestlist(event = event_id, guest = guest)
+            if guestlist.save():
+                print(f'guest with id {guest} was saved for event_id: {event_id}')
+                response={'message':'guest added'}
+                return make_response(jsonify(response),200)
+            else:
+                error={'error':'guest id not provided'}
+                return make_response(jsonify(error),422)
 
     else:
         error={'error':'event id does not exist'}
