@@ -31,10 +31,12 @@ def create():
                 response={'message':'guest added'}
                 return make_response(jsonify(response),200)
             else:
+                print('guest_id not provided')
                 error={'error':'guest id not provided'}
                 return make_response(jsonify(error),422)
 
     else:
+        print('event_id not exists')
         error={'error':'event id does not exist'}
         return make_response(jsonify(error),422)
 
