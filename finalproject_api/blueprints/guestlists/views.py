@@ -15,13 +15,14 @@ guestlists_api_blueprint=Blueprint('guestlists_api', __name__)
 def create():
     event_id = request.json.get('event_id')
     guest = get_jwt_identity()
-    print(guest)
     event_details = Event.get_or_none(Event.id==event_id)
     if event_details!=None:
         guestlist = Guestlist.get_or_none(Guestlist.event == event_id, Guestlist.guest==guest)
 
         if guestlist!=None:
-            response={'message':'guest already in guestlist'}
+            #delete entry if it exists
+            guestlist.delete_instance()
+            response={'message':'guest removed from guestist'}
             return make_response(jsonify(response),200)
 
         else:
